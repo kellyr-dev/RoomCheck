@@ -3,6 +3,7 @@ package com.example.userroom.mvvm
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.userroom.data.model.User
 import com.example.userroom.data.model.UserDatabase
@@ -41,6 +42,10 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO){
             repository.deleteUser(user)
         }
+    }
+
+    fun searchUser(searchQuery: String): LiveData<List<User>>{
+        return repository.searchUser(searchQuery).asLiveData()
     }
 
 }

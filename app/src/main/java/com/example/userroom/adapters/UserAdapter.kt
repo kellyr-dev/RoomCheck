@@ -37,10 +37,6 @@ class UserAdapter(private val userList: List<User>) : RecyclerView.Adapter<UserA
             .into(holder.itemView.findViewById<ImageView>(R.id.show_user_image))
 
 
-//        holder.itemView.findViewById<CardView>(R.id.cardview_employee).setOnClickListener {
-//            Toast.makeText(it.context, "Touched: "+ currentUser.firstName + currentUser.lastName, Toast.LENGTH_SHORT).show()
-//        }
-
         holder.itemView.findViewById<CardView>(R.id.cardview_employee).setOnClickListener {
             val action = ListFragmentDirections.actionListFragmentToDetailFragment(currentUser)
             holder.itemView.findNavController().navigate(action)
