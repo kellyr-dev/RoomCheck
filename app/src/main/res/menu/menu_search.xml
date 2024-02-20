@@ -4,10 +4,10 @@
 
     <item android:id="@+id/seach_menu"
         android:title="@string/search"
-        android:icon="@drawable/ic_search"
-        android:iconTint="@color/white"
-        app:showAsAction="ifRoom"
-        app:actionViewClass="com.google.android.material.search.SearchView"
+        android:icon="@drawable/ic_search_c"
+        android:iconTint="@color/material_dynamic_primary20"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
 
         />
 

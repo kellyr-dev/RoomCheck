@@ -25,6 +25,7 @@ class ListFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTex
     private lateinit var userViewModel : UserViewModel
     private lateinit var userRecycler: RecyclerView
     private lateinit var userAdapter: UserAdapter
+    private lateinit var serchView : SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,10 +52,13 @@ class ListFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTex
 
         })
 
+        setHasOptionsMenu(true)
+
         return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
         inflater.inflate(R.menu.menu_search, menu)
 
         val searchView = menu.findItem(R.id.seach_menu)?.actionView as androidx.appcompat.widget.SearchView?
@@ -85,6 +89,7 @@ class ListFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTex
 
             listUsers.let {
                 userAdapter = UserAdapter(it)
+                userRecycler.adapter = userAdapter
             }
 
         }
