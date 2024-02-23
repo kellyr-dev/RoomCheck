@@ -36,7 +36,7 @@ class DetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
         // initialization of a toolbar
-        toolbar2 = view.findViewById(R.id.myToolbar)
+        toolbar2 = view.findViewById(R.id.myTopToolbar)
 
         view.findViewById<TextView>(R.id.name_detail).text = args.currentUser.firstName + " " + args.currentUser.lastName
         view.findViewById<TextView>(R.id.age_detail).text = args.currentUser.age.toString()
