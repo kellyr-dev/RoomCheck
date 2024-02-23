@@ -2,7 +2,6 @@ package com.example.userroom.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -24,6 +25,7 @@ class DetailFragment : Fragment() {
 
     private val args by navArgs<DetailFragmentArgs>()
     private lateinit var userViewModel : UserViewModel
+    private lateinit var toolbar2 : Toolbar
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -33,44 +35,42 @@ class DetailFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
+        // initialization of a toolbar
+        toolbar2 = view.findViewById(R.id.myToolbar)
+
         view.findViewById<TextView>(R.id.name_detail).text = args.currentUser.firstName + " " + args.currentUser.lastName
         view.findViewById<TextView>(R.id.age_detail).text = args.currentUser.age.toString()
         view.findViewById<TextView>(R.id.pid_detail).text = args.currentUser.id.toString()
         view.findViewById<TextView>(R.id.email_detail).text = args.currentUser.email.toString()
 
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        // Add menu
-        setHasOptionsMenu(true)
+
+        // Add menu to Toolbar
+        setToolbarMenu()
 
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.options_menu, menu)
+    private fun setToolbarMenu() {
 
+        toolbar2.inflateMenu(R.menu.options_menu)
+        toolbar2.setOnMenuItemClickListener(object : Toolbar.OnMenuItemClickListener {
+            override fun onMenuItemClick(arg0: MenuItem): Boolean {
+                if (arg0.itemId == R.id.delete_menu) {
+                    showDialog()
+                }
+
+                if (arg0.itemId == R.id.update_menu){
+                    val action = DetailFragmentDirections.actionDetailFragmentToUpdateFragment(args.currentUser)
+                    findNavController().navigate(action)
+                }
+                return false
+
+            }
+        })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.delete_menu){
-            showDialog()
-        }
-
-        if (item.itemId == R.id.update_menu){
-            val action = DetailFragmentDirections.actionDetailFragmentToUpdateFragment(args.currentUser)
-            findNavController().navigate(action)
-        }
-
-        /*
-        holder.itemView.findViewById<CardView>(R.id.cardview_employee).setOnClickListener {
-            val action = ListFragmentDirections.actionListFragmentToDetailFragment(currentUser)
-            holder.itemView.findNavController().navigate(action)
-        }
-         */
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun showDialog() {
+    private fun showDialog(): Boolean {
        MaterialAlertDialogBuilder(requireContext())
            .setTitle("Delete User")
            .setMessage("Do you want to remove to "+args.currentUser.firstName+"?")
@@ -83,6 +83,7 @@ class DetailFragment : Fragment() {
                findNavController().navigate(R.id.action_detailFragment_to_listFragment)
            }
            .show()
+        return true
     }
 
     private fun deleteUser(user: User) {

@@ -1,13 +1,14 @@
 package com.example.userroom.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -17,10 +18,11 @@ import com.example.userroom.R
 import com.example.userroom.adapters.UserAdapter
 import com.example.userroom.mvvm.UserViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 
 
-class ListFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTextListener {
+class ListFragment : Fragment() {
 
     private lateinit var userViewModel : UserViewModel
     private lateinit var userRecycler: RecyclerView
@@ -52,34 +54,49 @@ class ListFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTex
 
         })
 
-        setHasOptionsMenu(true)
+
+        // Setting a TextWatcher to listener Material SearchView
+        val textWatcher: TextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                // this function is called before text is edited
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                searchUserOnDatabase(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                searchUserOnDatabase(s.toString())
+            }
+        }
+
+        // SearchView
+        serchView = view.findViewById(R.id.search_view)
+        serchView.editText.addTextChangedListener(textWatcher)
 
         return view
     }
 
+    /* old SearchView use OnQueryTextChange to listener queries
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-
         inflater.inflate(R.menu.menu_search, menu)
-
         val searchView = menu.findItem(R.id.seach_menu)?.actionView as androidx.appcompat.widget.SearchView?
-
         searchView?.setOnQueryTextListener(this)
 
     }
-
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query != null){
             searchUserOnDatabase(query)
         }
         return true
     }
-
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText != null){
             searchUserOnDatabase(newText)
         }
         return true
-    }
+    }*/
 
 
     private fun searchUserOnDatabase(query: String){
