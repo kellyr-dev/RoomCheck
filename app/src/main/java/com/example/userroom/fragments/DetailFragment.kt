@@ -19,6 +19,7 @@ import com.example.userroom.R
 import com.example.userroom.data.model.User
 import com.example.userroom.mvvm.UserViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 
 class DetailFragment : Fragment() {
@@ -26,6 +27,7 @@ class DetailFragment : Fragment() {
     private val args by navArgs<DetailFragmentArgs>()
     private lateinit var userViewModel : UserViewModel
     private lateinit var toolbar2 : Toolbar
+    private lateinit var textEmail: TextView
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -42,6 +44,7 @@ class DetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.age_detail).text = args.currentUser.age.toString()
         view.findViewById<TextView>(R.id.pid_detail).text = args.currentUser.id.toString()
         view.findViewById<TextView>(R.id.email_detail).text = args.currentUser.email.toString()
+        textEmail = view.findViewById(R.id.txt_email)
 
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
@@ -88,7 +91,7 @@ class DetailFragment : Fragment() {
 
     private fun deleteUser(user: User) {
         userViewModel.deleteUser(user)
-        Toast.makeText(requireContext(), "Successfully removed: ${user.firstName}", Toast.LENGTH_SHORT).show()
+        Snackbar.make(requireContext(), textEmail, "Successfully removed: ${user.firstName}", Snackbar.LENGTH_SHORT ).show()
     }
 
 }

@@ -37,11 +37,17 @@
             />
         <action
             android:id="@+id/action_detailFragment_to_listFragment"
-            app:destination="@id/listFragment" />
+            app:destination="@id/listFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/my_nav"
+            app:popUpToInclusive="true"
+            />
         <action
             android:id="@+id/action_detailFragment_to_updateFragment"
             app:destination="@id/updateFragment"
             app:launchSingleTop="true"
+            app:popUpTo="@id/my_nav"
+            app:popUpToInclusive="true"
             />
     </fragment>
     <fragment
@@ -53,6 +59,8 @@
             android:id="@+id/action_updateFragment_to_listFragment"
             app:destination="@id/listFragment"
             app:launchSingleTop="true"
+            app:popUpTo="@id/my_nav"
+            app:popUpToInclusive="true"
             />
         <argument
             android:name="updateUser"

@@ -14,11 +14,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.userroom.R
 import com.example.userroom.data.model.User
 import com.example.userroom.mvvm.UserViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class AddFragment : Fragment() {
 
     private lateinit var userViewModel : UserViewModel
+    private lateinit var addButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +32,7 @@ class AddFragment : Fragment() {
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
 
-        val addButton = view.findViewById<Button>(R.id.add_btn)
+        addButton = view.findViewById<Button>(R.id.add_btn)
         addButton.setOnClickListener {
             insertDataToDatabase()
         }
@@ -53,7 +55,7 @@ class AddFragment : Fragment() {
 
             // add User to ViewModel
             userViewModel.addUser(userObject)
-            Toast.makeText(requireContext(), "User created sucessfully!", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireContext(), addButton, "User created sucessfully!", Snackbar.LENGTH_SHORT ).show()
 
             // Navigate Back to List Fragment and see the update in Recycler View
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
