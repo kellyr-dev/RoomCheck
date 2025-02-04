@@ -3,13 +3,10 @@ package com.example.userroom.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,18 +18,17 @@ import com.example.userroom.mvvm.UserViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
-
 class DetailFragment : Fragment() {
-
     private val args by navArgs<DetailFragmentArgs>()
-    private lateinit var userViewModel : UserViewModel
-    private lateinit var toolbar2 : Toolbar
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var toolbar2: Toolbar
     private lateinit var textEmail: TextView
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
@@ -55,43 +51,38 @@ class DetailFragment : Fragment() {
     }
 
     private fun setToolbarMenu() {
-
         toolbar2.inflateMenu(R.menu.options_menu)
-        toolbar2.setOnMenuItemClickListener(object : Toolbar.OnMenuItemClickListener {
-            override fun onMenuItemClick(arg0: MenuItem): Boolean {
-                if (arg0.itemId == R.id.delete_menu) {
-                    showDialog()
-                }
+        toolbar2.setOnMenuItemClickListener(
+            object : Toolbar.OnMenuItemClickListener {
+                override fun onMenuItemClick(arg0: MenuItem): Boolean {
+                    if (arg0.itemId == R.id.delete_menu) {
+                        showDialog()
+                    }
 
-                if (arg0.itemId == R.id.update_menu){
-                    val action = DetailFragmentDirections.actionDetailFragmentToUpdateFragment(args.currentUser)
-                    findNavController().navigate(action)
+                    if (arg0.itemId == R.id.update_menu) {
+                        val action = DetailFragmentDirections.actionDetailFragmentToUpdateFragment(args.currentUser)
+                        findNavController().navigate(action)
+                    }
+                    return false
                 }
-                return false
-
-            }
-        })
+            },
+        )
     }
 
     private fun showDialog(): Boolean {
-       MaterialAlertDialogBuilder(requireContext())
-           .setTitle("Delete User")
-           .setMessage("Do you want to remove to "+args.currentUser.firstName+"?")
-           .setNegativeButton("Cancel"){
-               dialog, which ->
-
-           }
-           .setPositiveButton("Accept"){
-               dialog, which -> deleteUser(args.currentUser)
-               findNavController().navigate(R.id.action_detailFragment_to_listFragment)
-           }
-           .show()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Delete User")
+            .setMessage("Do you want to remove to " + args.currentUser.firstName + "?")
+            .setNegativeButton("Cancel") { dialog, which ->
+            }.setPositiveButton("Accept") { dialog, which ->
+                deleteUser(args.currentUser)
+                findNavController().navigate(R.id.action_detailFragment_to_listFragment)
+            }.show()
         return true
     }
 
     private fun deleteUser(user: User) {
         userViewModel.deleteUser(user)
-        Snackbar.make(requireContext(), textEmail, "Successfully removed: ${user.firstName}", Snackbar.LENGTH_SHORT ).show()
+        Snackbar.make(requireContext(), textEmail, "Successfully removed: ${user.firstName}", Snackbar.LENGTH_SHORT).show()
     }
-
 }

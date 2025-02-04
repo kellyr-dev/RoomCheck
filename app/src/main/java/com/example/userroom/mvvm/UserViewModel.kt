@@ -11,9 +11,10 @@ import com.example.userroom.data.model.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserViewModel(application: Application): AndroidViewModel(application) {
-
-    private val getAllUsers : LiveData<List<User>>
+class UserViewModel(
+    application: Application,
+) : AndroidViewModel(application) {
+    private val getAllUsers: LiveData<List<User>>
     private val repository: UserRepository
 
     init {
@@ -22,30 +23,25 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         getAllUsers = repository.getAllUsers
     }
 
-    fun addUser(user: User){
-        viewModelScope.launch(Dispatchers.IO){
+    fun addUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.addUser(user)
         }
     }
 
-    fun observeUsers(): LiveData<List<User>>{
-        return getAllUsers
-    }
+    fun observeUsers(): LiveData<List<User>> = getAllUsers
 
-    fun updateUser(user: User){
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.updateUser(user)
         }
     }
 
-    fun deleteUser(user: User){
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteUser(user)
         }
     }
 
-    fun searchUser(searchQuery: String): LiveData<List<User>>{
-        return repository.searchUser(searchQuery).asLiveData()
-    }
-
+    fun searchUser(searchQuery: String): LiveData<List<User>> = repository.searchUser(searchQuery).asLiveData()
 }
